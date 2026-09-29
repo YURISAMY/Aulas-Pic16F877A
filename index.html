@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apostila de Laboratório PIC16F877A & ACEPIC PRO | Portal de Aulas</title>
+  <meta name="description"
+    content="Portal completo com as 10 aulas práticas e conceituais para o microcontrolador PIC16F877A no kit ACEPIC PRO V8.0. MPLAB X, XC8 e projetos comentados.">
+
+  <!-- Fontes Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #111827;
+      --bg-card: #1e293b;
+      --bg-card-hover: #26354a;
+      --border-color: #334155;
+      --border-focus: #38bdf8;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #a855f7;
+      --pista-rapida-color: #38bdf8;
+      --pista-lenta-color: #a855f7;
+      --code-bg: #0d1117;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'Fira Code', Consolas, Monaco, monospace;
+      --font-display: 'Space Grotesk', var(--font-main);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    html.light {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-card: #f1f5f9;
+      --bg-card-hover: #e2e8f0;
+      --border-color: #cbd5e1;
+      --border-focus: #0284c7;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #64748b;
+      --accent-blue: #0284c7;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+      --accent-rose: #e11d48;
+      --accent-purple: #7c3aed;
+      --code-bg: #1e293b;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      font-size: 16px;
+      line-height: 1.65;
+      letter-spacing: -0.01em;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Scroll progress bar */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-emerald));
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s ease-out;
+    }
+
+    /* Navbar */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      background: rgba(17, 24, 39, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 900;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    html.light .top-nav {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-chip {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      list-style: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-blue);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .icon-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      color: var(--text-main);
+      border-color: var(--border-focus);
+      background: var(--bg-card-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Container Principal */
+    .page-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.45) 0%, rgba(88, 28, 135, 0.35) 60%, rgba(17, 24, 39, 0.9) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 2.75rem 2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    html.light .hero-banner {
+      background: linear-gradient(135deg, rgba(219, 234, 254, 0.7) 0%, rgba(243, 232, 255, 0.6) 60%, rgba(255, 255, 255, 0.95) 100%);
+      border: 1px solid rgba(147, 197, 253, 0.6);
+    }
+
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--accent-blue);
+      padding: 0.3rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-tag-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      color: var(--accent-purple);
+      padding: 0.3rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 25%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.025em;
+    }
+
+    html.light .hero-title {
+      background: linear-gradient(135deg, #0f172a 30%, #334155 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 1.12rem;
+      max-width: 860px;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    /* Meta Grid */
+    .hero-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.25rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    html.light .hero-meta-grid {
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .meta-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .meta-val {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Progress tracker bar inside hero */
+    .course-progress-card {
+      margin-top: 1.75rem;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    html.light .course-progress-card {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    html.light .progress-track {
+      background: rgba(0, 0, 0, 0.08);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 10%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-emerald));
+      border-radius: 9999px;
+      transition: width 0.4s ease;
+    }
+
+    /* Track Explainer Cards */
+    .track-explainer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .track-explainer {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .track-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .track-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .track-card.card-lenta {
+      border-left: 4px solid var(--pista-lenta-color);
+    }
+
+    .track-card.card-rapida {
+      border-left: 4px solid var(--pista-rapida-color);
+    }
+
+    .track-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-lenta .track-card-header {
+      color: var(--pista-lenta-color);
+    }
+
+    .card-rapida .track-card-header {
+      color: var(--pista-rapida-color);
+    }
+
+    .track-card-body {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Filters & Search Toolbar */
+    .toolbar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .toolbar-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .counter-badge {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+      font-weight: 700;
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 280px;
+      flex: 1;
+      max-width: 420px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 1rem 0.65rem 2.4rem;
+      color: var(--text-main);
+      font-family: var(--font-main);
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--text-muted);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    /* Grid de Aulas (10 Aulas) */
+    .classes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    @media (max-width: 480px) {
+      .classes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .lesson-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.6rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.25s ease;
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    /* Active Available Lesson Highlight */
+    .lesson-card.available {
+      border-top: 4px solid var(--accent-emerald);
+    }
+
+    .lesson-card.available:hover {
+      border-color: var(--accent-emerald);
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.15);
+    }
+
+    .lesson-card.upcoming {
+      border-top: 4px solid var(--border-color);
+      opacity: 0.92;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .lesson-number {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+    }
+
+    .status-badge.status-ready {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: var(--accent-emerald);
+    }
+
+    .status-badge.status-ready .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .status-badge.status-soon {
+      background: rgba(148, 163, 184, 0.1);
+      border: 1px solid var(--border-color);
+      color: var(--text-dim);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.65rem;
+      line-height: 1.35;
+    }
+
+    .card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+    }
+
+    .topic-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .tag-item {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: var(--radius-sm);
+      background: var(--code-bg);
+      color: var(--text-dim);
+      border: 1px solid var(--border-color);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    html.light .card-footer {
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .meta-time {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Action Buttons */
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.15rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+      border: 1px solid #3b82f6;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #60a5fa;
+      transform: translateY(-1px);
+    }
+
+    .btn-disabled {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-dim);
+      border: 1px solid var(--border-color);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    html.light .btn-disabled {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    /* Hardware & Resources Section */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+
+    @media (max-width: 860px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hw-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hw-box-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: var(--accent-blue);
+    }
+
+    .hw-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .spec-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+    }
+
+    .spec-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      font-weight: 700;
+      margin-bottom: 0.2rem;
+    }
+
+    .spec-val {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .download-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .download-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .download-item:hover {
+      border-color: var(--accent-blue);
+      background: var(--bg-card-hover);
+      color: var(--accent-blue);
+      transform: translateX(3px);
+    }
+
+    .download-meta {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    /* GitHub Pages Deployment Note Box */
+    .deploy-note {
+      background: rgba(56, 189, 248, 0.05);
+      border: 1px dashed var(--accent-blue);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 3.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .deploy-note-icon {
+      color: var(--accent-blue);
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .deploy-note-content h4 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--accent-blue);
+      margin-bottom: 0.35rem;
+      font-weight: 700;
+    }
+
+    .deploy-note-content p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .deploy-note-content code {
+      font-family: var(--font-mono);
+      background: var(--code-bg);
+      border: 1px solid var(--border-color);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      color: var(--accent-blue);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 2.5rem 1.5rem;
+      background: var(--bg-secondary);
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+
+    .footer-content {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-blue);
+    }
+
+    /* No search results feedback */
+    #no-results {
+      display: none;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      background: var(--bg-card);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Progresso no Topo -->
+  <div id="progress-bar"></div>
+
+  <!-- Barra de Navegação -->
+  <header class="top-nav">
+    <a href="#" class="nav-brand">
+      <span class="brand-chip">ACEPIC PRO</span>
+      <span>Laboratório PIC16F877A</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#aulas">Aulas</a></li>
+      <li><a href="#pistas">Metodologia</a></li>
+      <li><a href="#hardware">Hardware & Downloads</a></li>
+      <li><a href="#deploy">GitHub Pages</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button class="icon-btn" id="theme-toggle" title="Alternar Tema Claro/Escuro" aria-label="Alternar tema">
+        <svg id="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="icon-btn" title="Repositório GitHub"
+        aria-label="GitHub">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path
+            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+          </path>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Container Principal -->
+  <main class="page-container">
+
+    <!-- HERO BANNER -->
+    <section class="hero-banner">
+      <div class="hero-badge-row">
+        <span class="hero-tag">⚡ Apostila Prática Digital</span>
+        <span class="hero-tag-secondary">Kit ACEPIC PRO V8.0 • 10 Módulos</span>
+      </div>
+
+      <h1 class="hero-title">Sistemas Embarcados com PIC16F877A</h1>
+      <p class="hero-desc">
+        Bem-vindo ao portal interativo de aulas de laboratório de microcontroladores. Esta apostila digital foi
+        elaborada para guiar você desde a configuração inicial da placa, jumpers e gravação de firmware, até projetos
+        avançados com timers, interrupções, PWM, LCD, sensores analógicos e comunicação serial.
+      </p>
+
+      <div class="hero-meta-grid">
+        <div class="hero-meta-item">
+          <span class="meta-label">Microcontrolador</span>
+          <span class="meta-val">Microchip PIC16F877A</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="meta-label">Placa Didática</span>
+          <span class="meta-val">ACEPIC PRO V8.0</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="meta-label">Clock & Desempenho</span>
+          <span class="meta-val">Cristal 8 MHz • 2 MIPS</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="meta-label">Compilador & IDE</span>
+          <span class="meta-val">MPLAB X + XC8 (Microchip)</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="meta-label">Gravador Oficial</span>
+          <span class="meta-val">Bootloader AN1310 (USB)</span>
+        </div>
+      </div>
+
+      <div class="course-progress-card">
+        <div class="progress-header">
+          <span>Progresso do Curso: 1 de 10 Aulas Prontas</span>
+          <span style="color:var(--accent-emerald);">10% Concluído</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- METODOLOGIA DAS PISTAS (LENTA VS RÁPIDA) -->
+    <section id="pistas" class="track-explainer">
+      <div class="track-card card-lenta">
+        <div class="track-card-header">
+          <span>🐢</span> Pista Lenta (Para Entender com Autonomia)
+        </div>
+        <div class="track-card-body">
+          Em cada roteiro, a Pista Lenta detalha o porquê de cada decisão técnica: funcionamento interno dos registradores
+          (TRIS, PORT, FUSES), memória flash, ciclo de máquina e cálculos de clock. Recomendada para dominar a arquitetura
+          e ser capaz de criar projetos próprios sem depender de cópia de códigos prontos.
+        </div>
+      </div>
+
+      <div class="track-card card-rapida">
+        <div class="track-card-header">
+          <span>⚡</span> Pista Rápida (Para ir Direto à Prática)
+        </div>
+        <div class="track-card-body">
+          Seção objetiva e mecânica para alunos que já dominam os conceitos básicos ou necessitam validar o hardware de
+          imediato na bancada de testes. Contém tabelas rápidas de jumpers, comandos essenciais e códigos prontos para
+          compilar e gravar sem perda de tempo.
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO DE AULAS (GRID COM AS 10 AULAS) -->
+    <section id="aulas" class="toolbar-section">
+      <div class="toolbar-row">
+        <div class="section-title-wrap">
+          <h2 class="section-title">Grade Curricular</h2>
+          <span class="counter-badge" id="classes-counter">10 Aulas</span>
+        </div>
+
+        <!-- Barra de Busca -->
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="class-search" placeholder="Filtrar por nome, periférico ou registrador...">
+        </div>
+      </div>
+
+      <!-- Filtros Rápidos -->
+      <div class="filter-pills">
+        <button class="filter-btn active" data-filter="all">Todas as Aulas (10)</button>
+        <button class="filter-btn" data-filter="ready">Disponíveis (1)</button>
+        <button class="filter-btn" data-filter="gpio">I/O Digital & Teclas</button>
+        <button class="filter-btn" data-filter="displays">Displays & LCD</button>
+        <button class="filter-btn" data-filter="timers">Timers & Interrupções</button>
+        <button class="filter-btn" data-filter="advanced">Analógico & Serial</button>
+      </div>
+    </section>
+
+    <section class="classes-grid" id="grid-container">
+
+      <!-- ========================================== -->
+      <!-- AULA 01 (DISPONÍVEL)                       -->
+      <!-- ========================================== -->
+      <article class="lesson-card available" data-category="gpio" data-status="ready"
+        data-keywords="aula 01 primeiros passos pic16f877a acepic pro jumpers dp1 dp2 fuses trisd portd mplabx xc8 an1310 led esteira">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 01</span>
+            <span class="status-badge status-ready">
+              <span class="status-dot"></span> Disponível
+            </span>
+          </div>
+          <h3 class="card-title">Primeiros Passos com PIC16F877A & ACEPIC PRO</h3>
+          <p class="card-desc">
+            Configuração de jumpers USB (DP1 e DP2), entendimento e cálculo dos bits de configuração (FUSES), portas
+            TRISD e PORTD, compilação no MPLAB X com XC8, gravação via Bootloader AN1310 e simulador interativo de LEDs.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#JumpersDP1/DP2</span>
+            <span class="tag-item">#FUSES</span>
+            <span class="tag-item">#TRISD/PORTD</span>
+            <span class="tag-item">#AN1310</span>
+            <span class="tag-item">#SimuladorLED</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~45 min de prática</span>
+          </div>
+          <a href="classes/aula_01_arquivo_unico.html" class="btn-action btn-primary">
+            Acessar Aula 01 →
+          </a>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 02 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="gpio" data-status="soon"
+        data-keywords="aula 02 entradas digitais botoes push-button pull-up debounce option_reg trisb portb">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 02</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Entradas Digitais, Teclas e Tratamento de Ruído (Debounce)</h3>
+          <p class="card-desc">
+            Configuração de pinos como entrada (TRISB), pull-ups internos no registrador OPTION_REG, leitura de botões,
+            filtros de debounce por software e controle condicional de atuadores.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#TRISB/PORTB</span>
+            <span class="tag-item">#PullUp</span>
+            <span class="tag-item">#Debounce</span>
+            <span class="tag-item">#Botoes</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~40 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 03 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="displays" data-status="soon"
+        data-keywords="aula 03 displays 7 segmentos multiplexacao varredura decodificador catodo anodo comum">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 03</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Displays de 7 Segmentos e Multiplexação Temporal</h3>
+          <p class="card-desc">
+            Acionamento de múltiplos dígitos de display de 7 segmentos por varredura rápida, tabela de decodificação
+            hexadecimal/decimal, persistência de visão e economia de pinos de I/O.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#Display7Seg</span>
+            <span class="tag-item">#Multiplexacao</span>
+            <span class="tag-item">#TabelasEmC</span>
+            <span class="tag-item">#Contador</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~50 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 04 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="displays" data-status="soon"
+        data-keywords="aula 04 display lcd 16x2 hd44780 4 bits comandos caracteres customizados cgram">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 04</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Display LCD Alfanumérico 16x2 (Controlador HD44780)</h3>
+          <p class="card-desc">
+            Protocolo de comunicação a 4 bits para displays LCD, inicialização por instruções, escrita de texto formatado,
+            posicionamento do cursor e desenho de caracteres customizados na CGRAM.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#LCD16x2</span>
+            <span class="tag-item">#HD44780</span>
+            <span class="tag-item">#Modo4Bits</span>
+            <span class="tag-item">#CGRAM</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~60 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 05 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="timers" data-status="soon"
+        data-keywords="aula 05 temporizadores hardware timer0 timer1 tmr0 tmr1 prescaler base de tempo nao bloqueante">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 05</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Temporizadores de Hardware: Timer0 e Timer1</h3>
+          <p class="card-desc">
+            Operação de temporizadores internos sem bloquear o processador com delay, cálculo de prescaler para cristal de
+            8 MHz, detecção de estouro (TMR0IF) e criação de bases de tempo periódicas.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#Timer0</span>
+            <span class="tag-item">#Timer1</span>
+            <span class="tag-item">#Prescaler</span>
+            <span class="tag-item">#BaseDeTempo</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~50 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 06 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="timers" data-status="soon"
+        data-keywords="aula 06 sistema de interrupcoes intcon pie pir rb0 int timer0 isr eventos tempo real">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 06</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Sistema de Interrupções e Eventos em Tempo Real</h3>
+          <p class="card-desc">
+            Arquitetura de interrupções no PIC16F877A, registrador INTCON, interrupção externa no pino RB0/INT, rotina de
+            serviço de interrupção (ISR) no compilador XC8 e tratamento prioritário de eventos.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#Interrupcao</span>
+            <span class="tag-item">#INTCON</span>
+            <span class="tag-item">#RB0/INT</span>
+            <span class="tag-item">#ISR</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~55 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 07 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="timers" data-status="soon"
+        data-keywords="aula 07 modulo ccp pwm timer2 duty cycle frequencia pr2 buzzer motor brilho led">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 07</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Módulo CCP: Modulação por Largura de Pulso (PWM)</h3>
+          <p class="card-desc">
+            Configuração do módulo CCP1/CCP2 associado ao Timer2, cálculo de frequência e ciclo de trabalho (Duty Cycle),
+            controle de intensidade de luz em LEDs, controle de velocidade de motores e sons com Buzzer.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#PWM</span>
+            <span class="tag-item">#CCP1</span>
+            <span class="tag-item">#Timer2</span>
+            <span class="tag-item">#DutyCycle</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~45 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 08 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="advanced" data-status="soon"
+        data-keywords="aula 08 conversor analogico digital adc 10 bits adcon0 adcon1 an0 lm35 potenciometro">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 08</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Conversor Analógico-Digital (ADC de 10 Bits)</h3>
+          <p class="card-desc">
+            Leitura de grandezas físicas analógicas nos canais AN0-AN7, configuração dos registradores ADCON0 e ADCON1,
+            cálculo da resolução (passo de tensão) e conversão de sinal de sensores como potenciômetro e LM35.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#ADC10Bits</span>
+            <span class="tag-item">#ADCON0/1</span>
+            <span class="tag-item">#Potenciometro</span>
+            <span class="tag-item">#SensorLM35</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~50 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 09 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="advanced" data-status="soon"
+        data-keywords="aula 09 comunicacao serial uart usart rs232 spbrg txsta rcsta telemetria terminal serial">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 09</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Comunicação Serial UART / RS-232 com Computador</h3>
+          <p class="card-desc">
+            Troca de mensagens assíncronas entre a placa ACEPIC PRO e o computador via terminal serial, cálculo do baud rate
+            com SPBRG, envio de telemetria com printf() redirecionado e recepção por interrupção.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#UART</span>
+            <span class="tag-item">#RS232</span>
+            <span class="tag-item">#BaudRate</span>
+            <span class="tag-item">#Telemetria</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~55 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- ========================================== -->
+      <!-- AULA 10 (EM BREVE)                         -->
+      <!-- ========================================== -->
+      <article class="lesson-card upcoming" data-category="advanced" data-status="soon"
+        data-keywords="aula 10 eeprom memoria interna projeto integrador automacao estacao meteorologica pic16f877a">
+        <div>
+          <div class="card-top">
+            <span class="lesson-number">Aula 10</span>
+            <span class="status-badge status-soon">Em Breve</span>
+          </div>
+          <h3 class="card-title">Memória EEPROM Interna & Projeto Integrador Final</h3>
+          <p class="card-desc">
+            Gravação e leitura não-volátil de dados na EEPROM interna do PIC16F877A, integração de sensores, display LCD,
+            botões e comunicação serial em um projeto completo de controle e automação.
+          </p>
+          <div class="topic-tags">
+            <span class="tag-item">#EEPROM</span>
+            <span class="tag-item">#MemoriaNaoVolatil</span>
+            <span class="tag-item">#ProjetoIntegrador</span>
+            <span class="tag-item">#Automacao</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="meta-time">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>~80 min</span>
+          </div>
+          <span class="btn-action btn-disabled">Em Produção</span>
+        </div>
+      </article>
+
+      <!-- Feedback de pesquisa sem resultados -->
+      <div id="no-results">
+        <p style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Nenhuma aula encontrada</p>
+        <p style="font-size: 0.9rem;">Tente buscar por termos mais genéricos, como "LED", "Timer", "LCD" ou "Jumpers".</p>
+      </div>
+
+    </section>
+
+    <!-- HARDWARE & DOWNLOADS OFICIAIS -->
+    <section id="hardware" class="info-grid">
+      <div class="hw-box">
+        <h3 class="hw-box-title">
+          <span>⚙️</span> Especificações de Bancada & Placa ACEPIC
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem;">
+          O kit didático <strong>ACEPIC PRO V8.0</strong> oferece conexão USB integrada para gravação direta via
+          Bootloader AN1310, dispensando gravadores externos dedicados como o PICkit para o dia a dia de laboratório.
+        </p>
+
+        <div class="hw-specs-grid">
+          <div class="spec-card">
+            <div class="spec-label">Microcontrolador</div>
+            <div class="spec-val">PIC16F877A (DIP 40 pinos)</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Frequência de Clock</div>
+            <div class="spec-val">8.000.000 Hz (Cristal HS)</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Ciclo de Instrução</div>
+            <div class="spec-val">0,5 µs por instrução (Fosc / 4)</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Jumpers Críticos</div>
+            <div class="spec-val">DP1 e DP2 na posição USB</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Portas I/O Principais</div>
+            <div class="spec-val">PORTA, PORTB, PORTC, PORTD, PORTE</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-label">Bootloader Oficial</div>
+            <div class="spec-val">Microchip AN1310 v1.05r</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hw-box">
+        <h3 class="hw-box-title">
+          <span>📦</span> Downloads Essenciais
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 0.5rem;">
+          Softwares e manuais necessários para os projetos de bancada:
+        </p>
+
+        <div class="download-list">
+          <a href="http://suporte.acepic.com.br/acepicpro_v8.zip" target="_blank" rel="noopener noreferrer"
+            class="download-item">
+            <div>
+              <div>Pacote ACEPIC PRO V8.0</div>
+              <div class="download-meta">Manual, Bootloader e Exemplos (.ZIP)</div>
+            </div>
+            <span>↗</span>
+          </a>
+
+          <a href="https://www.microchip.com/en-us/tools-resources/develop/mplab-x-ide" target="_blank"
+            rel="noopener noreferrer" class="download-item">
+            <div>
+              <div>MPLAB X IDE</div>
+              <div class="download-meta">Ambiente oficial Microchip</div>
+            </div>
+            <span>↗</span>
+          </a>
+
+          <a href="https://www.microchip.com/en-us/tools-resources/develop/mplab-xc-compilers" target="_blank"
+            rel="noopener noreferrer" class="download-item">
+            <div>
+              <div>Compilador MPLAB XC8</div>
+              <div class="download-meta">Compilador C para linha PIC16</div>
+            </div>
+            <span>↗</span>
+          </a>
+
+          <a href="https://ww1.microchip.com/downloads/en/DeviceDoc/39582b.pdf" target="_blank" rel="noopener noreferrer"
+            class="download-item">
+            <div>
+              <div>Datasheet PIC16F877A</div>
+              <div class="download-meta">Documentação técnica oficial (PDF)</div>
+            </div>
+            <span>↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTA SOBRE GITHUB PAGES -->
+    <section id="deploy" class="deploy-note">
+      <div class="deploy-note-icon">💡</div>
+      <div class="deploy-note-content">
+        <h4>Como este repositório é publicado no GitHub Pages</h4>
+        <p>
+          Este arquivo <code>index.html</code> atua como a página de entrada principal na raiz do repositório. Cada aula
+          está organizada de forma modular na subpasta <code>classes/</code> (como a <code>classes/aula_01_arquivo_unico.html</code>).
+          Ao habilitar o <strong>GitHub Pages</strong> nas configurações do seu repositório apontando para a branch principal (na raiz <code>/</code>),
+          o site será carregado de forma automática com navegação rápida e visual responsivo.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <span class="footer-brand">Laboratório de Sistemas Embarcados • PIC16F877A</span>
+        <span>Apostila didática interativa desenvolvida para o kit ACEPIC PRO V8.0.</span>
+      </div>
+
+      <ul class="footer-links">
+        <li><a href="classes/aula_01_arquivo_unico.html">Aula 01</a></li>
+        <li><a href="#pistas">Metodologia</a></li>
+        <li><a href="#hardware">Downloads</a></li>
+        <li><a href="#inicio" onclick="window.scrollTo({top:0, behavior:'smooth'})">Topo ↑</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- SCRIPT DE INTERATIVIDADE & SINCRONIZAÇÃO DE TEMA -->
+  <script>
+    // -------------------------------------------------------------
+    // SINCRONIZAÇÃO DE TEMA (CLARO / ESCURO) VIA LOCALSTORAGE
+    // Mantém exatamente o mesmo padrão salvo na Aula 01 ('acepic_theme')
+    // -------------------------------------------------------------
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
+
+    const savedTheme = localStorage.getItem('acepic_theme') || 'dark';
+    if (savedTheme === 'light') {
+      htmlEl.classList.remove('dark');
+      htmlEl.classList.add('light');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      if (htmlEl.classList.contains('dark')) {
+        htmlEl.classList.remove('dark');
+        htmlEl.classList.add('light');
+        localStorage.setItem('acepic_theme', 'light');
+      } else {
+        htmlEl.classList.remove('light');
+        htmlEl.classList.add('dark');
+        localStorage.setItem('acepic_theme', 'dark');
+      }
+    });
+
+    // -------------------------------------------------------------
+    // BARRA DE PROGRESSO DE ROLAGEM
+    // -------------------------------------------------------------
+    const progressBar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      progressBar.style.width = scrolled + '%';
+    });
+
+    // -------------------------------------------------------------
+    // BUSCA E FILTROS DINÂMICOS DAS AULAS
+    // -------------------------------------------------------------
+    const searchInput = document.getElementById('class-search');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const lessonCards = document.querySelectorAll('.lesson-card');
+    const noResultsEl = document.getElementById('no-results');
+    const counterBadge = document.getElementById('classes-counter');
+
+    let currentFilter = 'all';
+    let currentSearch = '';
+
+    function applyFilterAndSearch() {
+      let visibleCount = 0;
+
+      lessonCards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const status = card.getAttribute('data-status');
+        const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+
+        // Checar categoria
+        let matchesCategory = false;
+        if (currentFilter === 'all') {
+          matchesCategory = true;
+        } else if (currentFilter === 'ready') {
+          matchesCategory = (status === 'ready');
+        } else {
+          matchesCategory = (category === currentFilter);
+        }
+
+        // Checar busca textual
+        const query = currentSearch.trim().toLowerCase();
+        let matchesQuery = true;
+        if (query) {
+          matchesQuery = keywords.includes(query) || title.includes(query) || desc.includes(query);
+        }
+
+        if (matchesCategory && matchesQuery) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        noResultsEl.style.display = 'block';
+      } else {
+        noResultsEl.style.display = 'none';
+      }
+
+      counterBadge.textContent = `${visibleCount} de ${lessonCards.length} Aulas`;
+    }
+
+    // Listener para o campo de busca com debounce simples
+    searchInput.addEventListener('input', (e) => {
+      currentSearch = e.target.value;
+      applyFilterAndSearch();
+    });
+
+    // Listener para as pílulas de filtro
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        applyFilterAndSearch();
+      });
+    });
+  </script>
+</body>
+
+</html>
