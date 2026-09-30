@@ -356,7 +356,7 @@
 
     .progress-fill {
       height: 100%;
-      width: 10%;
+      width: 20%;
       background: linear-gradient(90deg, var(--accent-blue), var(--accent-emerald));
       border-radius: 9999px;
       transition: width 0.4s ease;
@@ -901,8 +901,8 @@
 
       <div class="course-progress-card">
         <div class="progress-header">
-          <span>Progresso do Curso: 1 de 10 Aulas Prontas</span>
-          <span style="color:var(--accent-emerald);">10% Concluído</span>
+          <span>Progresso do Curso: 2 de 10 Aulas Prontas</span>
+          <span style="color:var(--accent-emerald);">20% Concluído</span>
         </div>
         <div class="progress-track">
           <div class="progress-fill"></div>
@@ -931,7 +931,7 @@
       <!-- Filtros Rápidos -->
       <div class="filter-pills">
         <button class="filter-btn active" data-filter="all">Todas as Aulas (10)</button>
-        <button class="filter-btn" data-filter="ready">Disponíveis (1)</button>
+        <button class="filter-btn" data-filter="ready">Disponíveis (2)</button>
         <button class="filter-btn" data-filter="gpio">I/O Digital & Teclas</button>
         <button class="filter-btn" data-filter="displays">Displays & LCD</button>
         <button class="filter-btn" data-filter="timers">Timers & Interrupções</button>
@@ -981,25 +981,28 @@
       </article>
 
       <!-- ========================================== -->
-      <!-- AULA 02 (EM BREVE)                         -->
+      <!-- AULA 02 (DISPONÍVEL)                       -->
       <!-- ========================================== -->
-      <article class="lesson-card upcoming" data-category="gpio" data-status="soon"
-        data-keywords="aula 02 entradas digitais botoes push-button pull-up debounce option_reg trisb portb">
+      <article class="lesson-card available" data-category="perifericos" data-status="ready"
+        data-keywords="aula 02 lcd display 16x2 hd44780 portd re0 re1 rs en adcon1 contraste trimpot cont pulsalcd escrevercaracteres ddram">
         <div>
           <div class="card-top">
             <span class="lesson-number">Aula 02</span>
-            <span class="status-badge status-soon">Em Breve</span>
+            <span class="status-badge status-ready">
+              <span class="status-dot"></span> Disponível
+            </span>
           </div>
-          <h3 class="card-title">Entradas Digitais, Teclas e Tratamento de Ruído (Debounce)</h3>
+          <h3 class="card-title">Escrevendo no Display LCD 16x2 com PIC16F877A</h3>
           <p class="card-desc">
-            Configuração de pinos como entrada (TRISB), pull-ups internos no registrador OPTION_REG, leitura de botões,
-            filtros de debounce por software e controle condicional de atuadores.
+            Controle do display LCD 16x2 na placa ACEPIC PRO: barramento Porta D (RD0–RD7), pinos RS (RE0) e EN (RE1), registrador ADCON1 para liberação digital, ajuste de contraste CONT, funções pulsaLCD e escreverCaracteres, memória DDRAM e simulador interativo.
           </p>
           <div class="topic-tags">
-            <span class="tag-item">#TRISB/PORTB</span>
-            <span class="tag-item">#PullUp</span>
-            <span class="tag-item">#Debounce</span>
-            <span class="tag-item">#Botoes</span>
+            <span class="tag-item">#LCD16x2</span>
+            <span class="tag-item">#HD44780</span>
+            <span class="tag-item">#RS/EN</span>
+            <span class="tag-item">#ADCON1</span>
+            <span class="tag-item">#pulsaLCD</span>
+            <span class="tag-item">#SimuladorDDRAM</span>
           </div>
         </div>
         <div class="card-footer">
@@ -1008,9 +1011,11 @@
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
-            <span>~40 min</span>
+            <span>~45 min de prática</span>
           </div>
-          <span class="btn-action btn-disabled">Em Produção</span>
+          <a href="classes/aula_02_arquivo_unico.html" class="btn-action btn-primary">
+            Acessar Aula 02 →
+          </a>
         </div>
       </article>
 
